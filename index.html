@@ -164,6 +164,25 @@ canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 .btn-download svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2;}
 .btn-sheets{font-family:var(--ff);font-size:13px;font-weight:600;padding:11px 22px;border:none;border-radius:8px;background:#1a6b45;color:#fff;cursor:pointer;transition:opacity .15s;display:inline-flex;align-items:center;gap:6px;}
 .btn-sheets:hover{opacity:.88;}
+
+.nivel-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px;}
+.nivel-card{border:2px solid var(--rule);border-radius:14px;padding:22px 18px 18px;cursor:pointer;transition:all .2s;position:relative;background:var(--cream);text-align:center;}
+.nivel-card:hover{border-color:var(--navy2);background:#fff;transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,31,53,.1);}
+.nivel-card.selected{border-color:var(--navy);background:rgba(13,31,53,.03);}
+.nivel-card input[type=radio]{position:absolute;opacity:0;}
+.nivel-badge{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;margin:0 auto 12px;font-size:20px;}
+.nivel-badge.basico{background:rgba(26,107,69,.12);}
+.nivel-badge.medio{background:rgba(13,31,53,.1);}
+.nivel-name{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;letter-spacing:-.2px;}
+.nivel-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;margin-bottom:8px;}
+.nivel-tag.ead-only{background:rgba(26,107,69,.1);color:var(--green);}
+.nivel-tag.presencial-ead{background:rgba(13,31,53,.08);color:var(--navy);}
+.nivel-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.nivel-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--rule);position:absolute;top:12px;right:12px;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.nivel-card.selected .nivel-check{border-color:var(--navy);background:var(--navy);}
+.nivel-cdot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:0;transition:opacity .2s;}
+.nivel-card.selected .nivel-cdot{opacity:1;}
+
 @media print{body *{visibility:hidden;}#contract-body,#contract-body *{visibility:visible;}#contract-body{position:fixed;top:0;left:0;width:100%;max-height:none;overflow:visible;padding:20px 32px;}}
 @media(max-width:560px){.field-row,.modal-grid,.payment-row,.c-sign-row{grid-template-columns:1fr;}.card-body{padding:17px 15px;}.step-label{display:none;}}
 </style>
@@ -177,20 +196,52 @@ canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 
 <div class="steps-wrap">
   <div class="steps-bar">
-    <div class="step-item"><div class="step-circle active" id="sc1">1</div><span class="step-label active" id="sl1">Dados</span></div>
+    <div class="step-item"><div class="step-circle active" id="sc1">1</div><span class="step-label active" id="sl1">Nível</span></div>
     <div class="step-connector" id="con1"></div>
-    <div class="step-item"><div class="step-circle" id="sc2">2</div><span class="step-label" id="sl2">Modalidade</span></div>
+    <div class="step-item"><div class="step-circle" id="sc2">2</div><span class="step-label" id="sl2">Dados</span></div>
     <div class="step-connector" id="con2"></div>
-    <div class="step-item"><div class="step-circle" id="sc3">3</div><span class="step-label" id="sl3">Pagamento</span></div>
+    <div class="step-item"><div class="step-circle" id="sc3">3</div><span class="step-label" id="sl3">Modalidade</span></div>
     <div class="step-connector" id="con3"></div>
-    <div class="step-item"><div class="step-circle" id="sc4">4</div><span class="step-label" id="sl4">Revisão</span></div>
-
+    <div class="step-item"><div class="step-circle" id="sc4">4</div><span class="step-label" id="sl4">Pagamento</span></div>
+    <div class="step-connector" id="con4"></div>
+    <div class="step-item"><div class="step-circle" id="sc5">5</div><span class="step-label" id="sl5">Revisão</span></div>
   </div>
 </div>
 
 <div class="form-wrap">
 
   <div class="form-card active" id="step1">
+    <div class="card-header">
+      <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+      <div><div class="card-title">Escolha o Nível do Curso</div><div class="card-subtitle">Selecione o curso em que deseja se inscrever</div></div>
+    </div>
+    <div class="card-body">
+      <div class="nivel-grid">
+        <div class="nivel-card" id="nc-basico" onclick="selectNivel('basico')">
+          <input type="radio" name="nivel" value="basico">
+          <div class="nivel-check"><div class="nivel-cdot"></div></div>
+          <div class="nivel-badge basico">&#128214;</div>
+          <div class="nivel-name">Curso Básico em Teologia</div>
+          <div class="nivel-tag ead-only">&#128187; 100% EAD</div>
+          <div class="nivel-desc">Formação introdutória em Teologia, disponível inteiramente pela plataforma online.</div>
+        </div>
+        <div class="nivel-card" id="nc-medio" onclick="selectNivel('medio')">
+          <input type="radio" name="nivel" value="medio">
+          <div class="nivel-check"><div class="nivel-cdot"></div></div>
+          <div class="nivel-badge medio">&#127891;</div>
+          <div class="nivel-name">Curso Médio em Teologia</div>
+          <div class="nivel-tag presencial-ead">&#127963;&#65039; Presencial ou &#128187; EAD</div>
+          <div class="nivel-desc">Formação intermediária com opção de aulas presenciais ou online.</div>
+        </div>
+      </div>
+      <span class="field-error" id="e-nivel" style="margin-top:4px">Selecione um nível para continuar.</span>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="irStep2()">Próximo <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card" id="step2">
     <div class="card-header">
       <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
       <div><div class="card-title">Dados Pessoais</div><div class="card-subtitle">Informações que constarão no contrato</div></div>
@@ -213,10 +264,10 @@ canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
     </div>
   </div>
 
-  <div class="form-card" id="step2">
+  <div class="form-card" id="step3">
     <div class="card-header">
       <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-      <div><div class="card-title">Modalidade do Curso</div><div class="card-subtitle">Como você deseja estudar?</div></div>
+      <div><div class="card-title">Modalidade do Curso</div><div class="card-subtitle" id="modal-subtitle">Como você deseja estudar?</div></div>
     </div>
     <div class="card-body">
       <div class="modal-grid">
@@ -254,13 +305,13 @@ canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
         <span class="field-error" id="e-classe" style="margin-top:8px">Selecione uma classe.</span>
       </div>
       <div class="btn-row">
-        <button class="btn-secondary" onclick="irStep(1)">Voltar</button>
-        <button class="btn-primary" onclick="irStep3()">Próximo <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        <button class="btn-secondary" onclick="irStep(2)">Voltar</button>
+        <button class="btn-primary" onclick="irStep4modal()">Próximo <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
       </div>
     </div>
   </div>
 
-  <div class="form-card" id="step3">
+  <div class="form-card" id="step4">
     <div class="card-header">
       <div class="card-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
       <div><div class="card-title">Condições de Pagamento</div><div class="card-subtitle">Leia com atenção e confirme sua ciência</div></div>
@@ -288,22 +339,22 @@ canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
       </div>
       <span class="field-error" id="e-payment" style="margin-top:10px">Confirme todos os itens acima para continuar.</span>
       <div class="btn-row">
-        <button class="btn-secondary" onclick="irStep(2)">Voltar</button>
-        <button class="btn-primary" onclick="irStep4()">Próximo <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        <button class="btn-secondary" onclick="irStep(3)">Voltar</button>
+        <button class="btn-primary" onclick="irStep5payment()">Próximo <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
       </div>
     </div>
   </div>
 
-  <div class="form-card" id="step4">
+  <div class="form-card" id="step5">
     <div class="card-header">
       <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-      <div><div class="card-title">Revisão dos Dados</div><div class="card-subtitle">Confirme seus dados antes de concluir</div></div>
+      <div><div class="card-title">Revisão dos Dados</div><div class="card-subtitle">Confirme tudo antes de concluir a matrícula</div></div>
     </div>
     <div class="card-body">
       <div class="review-section"><div class="review-label">Dados Pessoais</div><div class="review-grid" id="review-pessoal"></div></div>
       <div class="review-section" style="margin-top:16px"><div class="review-label">Modalidade e Pagamento</div><div class="review-grid" id="review-modal"></div></div>
       <div class="btn-row">
-        <button class="btn-secondary" onclick="irStep(3)">Voltar e editar</button>
+        <button class="btn-secondary" onclick="irStep(4)">Voltar e editar</button>
         <button class="btn-primary" onclick="concluirMatricula()" style="background:var(--green)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Concluir Matrícula</button>
       </div>
     </div>
@@ -326,8 +377,33 @@ canvas{display:block;width:100%;touch-action:none;cursor:crosshair;}
 
 <script>
 var LOGO_SRC = "data:image/png;base64,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AREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERB//9k=";
-var state = {nome:'',email:'',whats:'',cpf:'',rg:'',modalidade:'',classeLabel:''};
-var stepAtual = 1, assinado = false, modalSel = '', classeSel = '', classeLabelSel = '';
+var state = {nivel:'',nomeNivel:'',nome:'',email:'',whats:'',cpf:'',rg:'',modalidade:'',classeLabel:''};
+var stepAtual = 1, assinado = false, nivelSel = '', modalSel = '', classeSel = '', classeLabelSel = '';
+
+// ── NIVEL ──
+function selectNivel(n) {
+  nivelSel = n;
+  document.getElementById('nc-basico').classList.toggle('selected', n === 'basico');
+  document.getElementById('nc-medio').classList.toggle('selected', n === 'medio');
+  document.getElementById('e-nivel').classList.remove('show');
+}
+
+function irStep2() {
+  if (!nivelSel) { document.getElementById('e-nivel').classList.add('show'); return; }
+  state.nivel = nivelSel;
+  state.nomeNivel = nivelSel === 'basico' ? 'Curso Básico em Teologia' : 'Curso Médio em Teologia';
+  if (nivelSel === 'basico') {
+    document.getElementById('mc-presencial').style.display = 'none';
+    document.getElementById('classes-section').classList.remove('show');
+    selectModal('ead');
+    document.getElementById('modal-subtitle').textContent = 'Curso Básico — modalidade exclusivamente EAD';
+  } else {
+    document.getElementById('mc-presencial').style.display = '';
+    document.getElementById('modal-subtitle').textContent = 'Como você deseja estudar?';
+    if (modalSel === 'ead') { modalSel = ''; document.getElementById('mc-ead').classList.remove('selected'); }
+  }
+  irStep(2);
+}
 
 // MASKS - written carefully to avoid shell escaping issues
 document.getElementById('f-cpf').addEventListener('input', function() {
@@ -355,26 +431,26 @@ document.getElementById('f-whats').addEventListener('input', function() {
 });
 
 function irStep(n) {
-  ['step1','step2','step3','step4','step-success'].forEach(function(id) {
+  ['step1','step2','step3','step4','step5','step-success'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
   stepAtual = n;
-  var target = n > 4 ? 'step-success' : 'step' + n;
+  var target = n > 5 ? 'step-success' : 'step' + n;
   document.getElementById(target).classList.add('active');
   updateStepsUI(n);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function updateStepsUI(n) {
-  for (var i = 1; i <= 4; i++) {
+  for (var i = 1; i <= 5; i++) {
     var sc = document.getElementById('sc' + i);
     var sl = document.getElementById('sl' + i);
     if (!sc) continue;
     sc.className = 'step-circle' + (i < n ? ' done' : '') + (i === n ? ' active' : '');
     sl.className = 'step-label' + (i === n ? ' active' : '');
     sc.innerHTML = i < n ? '&#10003;' : String(i);
-    if (i < 4) {
+    if (i < 5) {
       var con = document.getElementById('con' + i);
       if (con) con.className = 'step-connector' + (i < n ? ' done' : '');
     }
@@ -389,7 +465,7 @@ function setFieldError(fid, eid, valid) {
   return valid;
 }
 
-function irStep2() {
+function irStep3() {
   var nome  = document.getElementById('f-nome').value.trim();
   var email = document.getElementById('f-email').value.trim();
   var whats = document.getElementById('f-whats').value.trim();
@@ -406,7 +482,7 @@ function irStep2() {
   if (!setFieldError('f-rg','e-rg', rgDigits.length >= 7)) ok = false;
   if (!ok) return;
   state.nome = nome; state.email = email; state.whats = whats; state.cpf = cpf; state.rg = rg;
-  irStep(2);
+  irStep(3);
 }
 
 function selectModal(m) {
@@ -431,12 +507,12 @@ function selectClass(id, label) {
   document.getElementById('e-classe').classList.remove('show');
 }
 
-function irStep3() {
+function irStep4modal() {
   if (!modalSel) { document.getElementById('e-modal').classList.add('show'); return; }
   document.getElementById('e-modal').classList.remove('show');
   if (modalSel === 'presencial' && !classeSel) { document.getElementById('e-classe').classList.add('show'); return; }
   state.modalidade = modalSel; state.classeLabel = classeLabelSel;
-  irStep(3);
+  irStep(4);
 }
 
 function toggleCheck(cid, checked) {
@@ -444,18 +520,19 @@ function toggleCheck(cid, checked) {
   if (checked) el.classList.add('checked'); else el.classList.remove('checked');
 }
 
-function irStep4() {
+function irStep5payment() {
   var ok = document.getElementById('cb-pay1').checked &&
            document.getElementById('cb-pay2').checked &&
            document.getElementById('cb-pay3').checked;
   if (!ok) { document.getElementById('e-payment').classList.add('show'); return; }
   document.getElementById('e-payment').classList.remove('show');
-  renderReview(); irStep(4);
+  renderReview(); irStep(5);
 }
 
 function renderReview() {
   var mLabel = state.modalidade === 'presencial' ? 'Presencial' : 'EAD';
   document.getElementById('review-pessoal').innerHTML =
+    ri('Nível', '<strong>' + state.nomeNivel + '</strong>') +
     ri('Nome', state.nome) + ri('E-mail', state.email) + ri('WhatsApp', state.whats) +
     ri('CPF', state.cpf) + ri('RG', state.rg);
   document.getElementById('review-modal').innerHTML =
@@ -472,13 +549,14 @@ function ri(k, v) {
 function concluirMatricula() {
   renderReview();
   enviarSheetsSilencioso();
-  irStep(5);
+  irStep(6);
 }
 
 function enviarSheetsSilencioso() {
-  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbxM9ddo2_54iqQ_eHRrN1kgNRCz95U0RJCWa9ufCCNc-Z00gNgHA-JGC1bZaHyK5SbILg/exec';
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbwLTQIuzVIlC9q5IgvI988UY_lY_eGx7h6AsGxe5_OXl4dyXkVbCBFzQrgi--zgb_fFnA/exec';
   if (SHEET_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') { return; }
   var payload = {
+    nivel: state.nomeNivel,
     nome: state.nome, email: state.email, whatsapp: state.whats,
     cpf: state.cpf, rg: state.rg,
     modalidade: state.modalidade === 'presencial' ? 'Presencial' : 'EAD',
