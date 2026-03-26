@@ -556,14 +556,14 @@ function concluirMatricula() {
 }
 
 function enviarSheetsSilencioso() {
-  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbwLTQIuzVIlC9q5IgvI988UY_lY_eGx7h6AsGxe5_OXl4dyXkVbCBFzQrgi--zgb_fFnA/exec';
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbwSIRrSHXMWAYCN3ttDXH-vgYn64ppEzHe9QIsXorcpqj3KkVmrrZ6YpGiOokJvX1R8aw/exec';
   if (SHEET_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') { return; }
   var payload = {
     nivel: state.nomeNivel,
     nome: state.nome, email: state.email, whatsapp: state.whats,
     cpf: state.cpf, rg: state.rg,
     modalidade: state.modalidade === 'presencial' ? 'Presencial' : 'EAD',
-    classe: state.classeLabel || 'EAD',
+    classe: state.classeLabel || state.nomeNivel,
     data: hoje()
   };
   fetch(SHEET_URL, {
